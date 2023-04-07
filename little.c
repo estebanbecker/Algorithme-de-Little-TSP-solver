@@ -9,8 +9,9 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include <time.h>
 
-#define NBR_TOWNS 6
+#define NBR_TOWNS 15
 
 /* Distance matrix */
 double dist[NBR_TOWNS][NBR_TOWNS] ;
@@ -22,6 +23,8 @@ int ending_town[NBR_TOWNS] ;
 /* no comment */
 int best_solution[NBR_TOWNS] ;
 double best_eval=-1.0 ;
+
+int nb_nodes = 0;
 
 
 /**
@@ -36,7 +39,16 @@ float coord[NBR_TOWNS][2]=
     {345.0,  750.0},
     {945.0,  685.0},
     {845.0,  655.0},
-    {880.0,  660.0}
+    {880.0,  660.0},
+    {25.0,  230.0},
+    {525.0, 1000.0},
+    {580.0, 1175.0},
+    {650.0, 1130.0},
+    {1605.0, 620.0},
+    {1220.0, 580.0},
+    {1465.0, 200.0},
+    {1530.0,  5.0},
+    {845.0, 680.0}
 } ;
 
 
@@ -220,8 +232,12 @@ void subtour_elimination(double d[NBR_TOWNS][NBR_TOWNS], int iteration)
                 {
                     end = ending_town[k];
                     found = 1;
-                    d[end][start] = -1;
+                    
                 }
+            }
+            if(found)
+            {
+                d[end][start] = -1;
             }
             j++;
         }
@@ -235,6 +251,7 @@ void subtour_elimination(double d[NBR_TOWNS][NBR_TOWNS], int iteration)
 void little_algorithm(double d0[NBR_TOWNS][NBR_TOWNS], int iteration, double eval_node_parent)
 {
 
+    nb_nodes++;
     if (iteration == NBR_TOWNS)
     {
         build_solution ();
@@ -340,6 +357,8 @@ void little_algorithm(double d0[NBR_TOWNS][NBR_TOWNS], int iteration, double eva
 
     if(izero == -1 || jzero == -1)
         return;
+
+    /* Save the starting and ending town of the subtour */
     starting_town[iteration] = izero;
     ending_town[iteration] = jzero;
 
@@ -386,6 +405,11 @@ void little_algorithm(double d0[NBR_TOWNS][NBR_TOWNS], int iteration, double eva
 int main (int argc, char* argv[])
 {
 
+    /*Start timer*/
+    clock_t start, end;
+    double cpu_time_used;
+    start = clock();
+
     best_eval = -1 ;
 
     /* Print problem informations */
@@ -427,6 +451,12 @@ int main (int argc, char* argv[])
     printf("Best solution:") ;
     print_solution (best_solution, best_eval) ;
 
+    /*End timer*/
+    end = clock();
+    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("Time used: %f\n", cpu_time_used);
+
+    printf("Total number of nodes: %d\n", nb_nodes);
 
     printf ("Hit RETURN!\n") ;
     getchar() ;

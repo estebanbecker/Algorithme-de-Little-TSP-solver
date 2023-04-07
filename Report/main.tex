@@ -4,7 +4,7 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage[utf8]{inputenc}
-\usepackage[francais]{babel}
+\usepackage[french]{babel}
 \usepackage{listings}
 \usepackage{color}
 \usepackage[T1]{fontenc}
@@ -51,14 +51,14 @@
 
 \subsection{Compilation et exécution}
 
-Le code suivant a été codé en C et compilé pour machine Linux en utilisant gcc via le terminal. 
+Le code suivant a été codé en C et compilé pour machine Linux en utilisant gcc via le terminal.
 Le programme affiche bien les coordonnées des 6 villes.
 
 \subsection{Calcul de la distance}
 
-Etant dans un espace a 2 dimensions, la distance entre deux points est donnée par la formule suivante : $d = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$
+Étant dans un espace a 2 dimensions, la distance entre deux points est donnée par la formule suivante : $d = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$
 La distance entre les villes 1 et 2 est donc de $d = \sqrt{(2 - 1)^2 + (2 - 1)^2} = \sqrt{2}$
-De plus, la distance entre la ville $i$ et $j$ est la même que la distance entre la ville $j$ et $i$. Ainsi la matrice est symetrique, il suffit de calculer la partie triangulaire supérieur ou la partie triangulaire inférieur de la matrice.
+De plus, la distance entre la ville $i$ et $j$ est la même que la distance entre la ville $j$ et $i$. Ainsi la matrice est symétrique, il suffit de calculer la partie triangulaire supérieur ou la partie triangulaire inférieur de la matrice.
 
 Ainsi la fonction de calcul de la distance est la suivante :
 \begin{lstlisting}[language=C]
@@ -78,7 +78,7 @@ for (int i=0; i<NBR_TOWNS; i++)
 \end{lstlisting}
 
 Ainsi, à la ligne 7 on calcul la distance entre la ville i et la ville j, et à la ligne 9 on recopie cette distance dans la case correspondante de la matrice symétrique.
-La ligne 12 permet de mettre une valeur négative dans la diagonale de la matrice, afin de ne pas prendre en compte la distance entre une ville et elle même.
+La ligne 12 permet de mettre une valeur négative dans la diagonale de la matrice, afin de ne pas prendre en compte la distance entre une ville et elle-même.
 
 \subsection{Création fonction build\_nearest\_neighbour}
 
@@ -133,17 +133,17 @@ double build_nearest_neighbour()
 
 \end{lstlisting}
 
-A la ligne 10 on initialise la solution avec toutes les villes valant 0.
+À la ligne 10 on initialise la solution avec toutes les villes valant 0.
 
-Ensuite dans la boucle for de la ligne 16 à la ligne 30 on cherche la ville la plus proche de la ville précédente, et on l'ajoute à la solution. On commence à partir de i=1 car on commence forcément par la ville 0.
+Ensuite dans la boucle for de la ligne 16 à la ligne 30 on cherche la ville la plus proche de la ville précédente, et on l'ajoute à la solution. On commence à partir de i=1, car on commence forcément par la ville 0.
 
-De la ligne 21 à la ligne 28 on vérifie que la ville n'a pas encore été visité. Si elle a déjà été visité, on l'ignore. Sinon à la ligne 29 on vérifie si la ville en cours d'étude est plus intéréseente que les villes précédemment étudier, si oui, on la mémorise puis on étuduie la ville suivante.
+De la ligne 21 à la ligne 28 on vérifie que la ville n'a pas encore été visité. Si elle a déjà été visité, on l'ignore. Sinon à la ligne 29 on vérifie si la ville en cours d'étude est plus intéressante que les villes précédemment étudier, si oui, on la mémorise puis on étudie la ville suivante.
 
 \section{Algorithme de Little}
 
 \subsection{Mettre des 0 dans la matrice des distances}
 
-Premièrement nous devons faire apparaitre au moins un 0 dans chaque ligne et chaque collone de la matrice des distances.
+Premièrement nous devons faire apparaitre au moins un 0 dans chaque ligne et chaque colonne de la matrice des distances.
 
 \begin{lstlisting}[language=C]
     /* Make sure that there is a 0 in every row*/
@@ -187,11 +187,12 @@ Premièrement nous devons faire apparaitre au moins un 0 dans chaque ligne et ch
     }
 \end{lstlisting}
 
-Il ne faut pas oublier de mettre à jour le poids de l'évaluation de la solution au ligne 18 et 38. De plus, il ne faut pas oublier que les valeurs "-1" ne doivent pas être prise en compte dans le calcul du minimum.
+Il ne faut pas oublier de mettre à jour le poids de l'évaluation de la solution aux lignes 18 et 38. De plus, il ne faut pas oublier que les valeurs "-1" ne doivent pas être prise en compte dans le calcul du minimum.
 
-\subsection{Trouvez le 0 avec la plus grosse penalité}
+\subsection{Trouvez le 0 avec la plus grosse pénalité}
 
-Pour effectuer celà nous allons parcourir toute la matrice, et à chaque fois qu'on tombe sur un 0, on va calculer la penalité de ce 0. La penalité d'un 0 est la somme des plus petites valeurs de la ligne et de la colonne du 0. Il faut penser à exlure le 0 de la recherche
+Pour effectuer cela nous allons parcourir toute la matrice, et à chaque fois qu'on tombe sur un 0, on va calculer la pénalité de ce 0. La pénalité d'un 0 est la somme des plus petites valeurs de la ligne et de la colonne du 0. Il faut penser à exclure le 0 de la recherche.
+À chaque fois qu'on a calculé une pénalité, on la compare à la pénalité précédente, si elle est plus grande, on la mémorise.
 
 \begin{lstlisting}
     for(i = 0; i < NBR_TOWNS; i++)
@@ -234,6 +235,164 @@ Pour effectuer celà nous allons parcourir toute la matrice, et à chaque fois q
 \end{lstlisting}
 
 Il faut penser lors de la vérification de la condition aux lignes 13 et 17 à exclure le 0 de la recherche et a ne pas prendre en compte les chemins impossibles.
-De plus, il faut penser au cas où il y a un zero dans une collone ou une ligne avec des -1 partout dans cette même collone ou ligne. Dans ce cas, on est obliger de selectionner ce 0, c'est pour cela que l'on utilise la variable taken\_x et taken\_y.
+De plus, il faut penser au cas où il y a un zéro dans une colonne ou une ligne avec des -1 partout dans cette même colonne ou ligne. Dans ce cas, on est obligé de sélectionner ce 0, c'est pour cela que l'on utilise la variable taken\_x et taken\_y et la valeur INFINITY.
+
+\begin{lstlisting}[language=C]
+    if(izero == -1 || jzero == -1)
+    return;
+\end{lstlisting}
+
+Si on n'a pas trouvé de 0, on sort de la fonction. Les variables izero et jzero ont été initialisé à 1 avant de commencer la recherche.
+
+\subsection{Sélection de la liaison à effectuer}
+
+Une fois le 0 avec la plus grosse pénalité sélectionné, il faut maintenant mettre à jour la solution et la matrice des distances.
+
+\begin{lstlisting}[language=C]
+    starting_town[iteration] = izero;
+    ending_town[iteration] = jzero;
+\end{lstlisting}
+
+Étant donné que l'on ne peut plus partir de la ville de départ de ou arriver à la ville d'arrivée de l'itération, on remplit la ligne et la colonne où se trouve le 0 par des -1.
+
+De plus, étant donné que nous explorons le graphe en profondeur, il faut garder une version de la matrice au cas où le chemin ne mène pas à la solution finale. Pour cela, on utilise la matrice d2 comme matrice de travail et on conserve la matrice d.
+
+\begin{lstlisting}[language=C]
+    for (i = 0; i < NBR_TOWNS; i++)
+    {
+        d2[izero][i] = -1;
+        d2[i][jzero] = -1;
+    }
+\end{lstlisting}
+
+\subsection{Élimination des circuits}
+
+Afin d'éviter à l'algorithme d'effectuer des itérations inutiles, il faut éliminer les circuits possibles dans la matrice des distances.
+Pour corriger cela, il faut parcourir la matrice des distances et mettre à -1 les chemins qui sont impossibles. Pour cela j'ai codé la fonction suivante :
+
+\begin{lstlisting}[language=c]
+void subtour_elimination(double d[NBR_TOWNS][NBR_TOWNS], int iteration)
+{
+    for(int i = 0; i <= iteration; i++)
+    {
+        int j = 0;
+        int found = 1;
+        int start = starting_town[i];
+        int end = starting_town[i];
+
+        while(j <= iteration && found)
+        {
+            for (int k = 0; k <= iteration; k++)
+            {
+                found = 0;
+                if(starting_town[k] == end)
+                {
+                    end = ending_town[k];
+                    found = 1;
+                }
+            }
+            if(found)
+            {
+                d[end][start] = -1;
+            }
+            j++;
+        }
+        
+    }
+}
+\end{lstlisting}
+
+Pour effectuer cela, la fonction parcourt le vecteur des solutions, identifie les suites de chemins et élimine les possibilités qui feraient un circuit. 
+Ainsi, si les solutions actuelles sont : 
+\begin{itemize}
+    \item 2 -> 3
+    \item 4 -> 5
+    \item 3 -> 1
+\end{itemize}
+
+On peut identifier les chemins suivants :
+\begin{itemize}
+    \item 2 -> 3 -> 1
+    \item 4 -> 5
+\end{itemize}
+
+Il faut donc éliminer les chemins 1 -> 2 et 5 -> 4. Pour cela, on parcourt la matrice des distances et on met à -1 les chemins qui sont impossibles.
+
+\subsection{Passage à l'itération suivante}
+
+\subsubsection{On selectionne le 0 avec la plus grosse pénalité}
+
+Maintenant, c'est le moment de passer à l'itération suivante avec la ligne ci-dessous :
+\begin{lstlisting}[language=C]
+    little_algorithm(d2, iteration + 1, eval_node_child);
+\end{lstlisting}
+
+De plus, dans le cas où nous sommes arrivé au bout, le nombre d'itérations est égal au nombre de villes, il faut donc construire la solution finale.
+
+\begin{lstlisting}[language=C]
+    if (iteration == NBR_TOWNS)
+    {
+        build_solution ();
+        return;
+    }
+\end{lstlisting}
+
+\subsubsection{On ne sélectionne pas le 0 avec la plus grosse pénalité}
+
+Dans le cas où le 0 avec la plus grosse pénalité n'est pas sélectionné, il faut reprendre la matrice d'origine et la mettre à jour la matrice des distances en mettant -1 au niveau du 0 pas sélectionné.
+
+De plus, vu que nous n'avons pas sélectionné de chemin, il ne faut pas faire augment le nombre d'itérations.
+
+\begin{lstlisting}[language=C]
+    /* Do the modification on a copy of the distance matrix */
+    memcpy (d2, d, NBR_TOWNS*NBR_TOWNS*sizeof(double)) ;
+
+    /**
+     *  Modify the dist matrix to explore the other possibility : the non-choice
+     *  of the zero with the max penalty
+     */
+
+    d2[izero][jzero] = -1;
+
+    /* Explore right child node according to non-choice */
+    little_algorithm(d2, iteration, eval_node_child);
+\end{lstlisting}
+
+\subsection{Sortir de la fonction}
+
+\subsubsection{On a trouvé une solution}
+
+Si on a trouvé une solution, il faut la comparer à la solution actuelle et la conserver si elle est meilleure.
+Ceci est effectué dans la fonction build\_solution.
+
+\begin{lstlisting}[language=C]
+    double eval = evaluation_solution(solution) ;
+
+    if (best_eval<0 || eval < best_eval)
+    {
+        best_eval = eval ;
+        for (i=0; i<NBR_TOWNS; i++)
+            best_solution[i] = solution[i] ;
+        printf ("New best solution: ") ;
+        print_solution (solution, best_eval) ;
+    }
+\end{lstlisting}
+
+\subsubsection{Le nœud actuel est moins intéressant que la meilleure solution}
+
+Dans le cas où le nœud actuel est moins intéressant que la meilleure solution, il faut sortir de la fonction avec les lignes suivantes :
+
+\begin{lstlisting}[language=C]
+if (best_eval>=0 && eval_node_child >= best_eval)
+    return;
+\end{lstlisting}
+
+\subsubsection{La matrice est pleine de -1}
+
+Si la matrice est pleine de -1, il faut sortir de la fonction. Ceci est possible, car en éliminant les cycles, on a potentiellement éliminé tous les chemins possibles.
+\begin{lstlisting}[language=C]
+if(izero == -1 || jzero == -1)
+    return;
+\end{lstlisting}
 
 \end{document}
