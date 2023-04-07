@@ -252,10 +252,10 @@ void little_algorithm(double d0[NBR_TOWNS][NBR_TOWNS], int iteration, double eva
     /* Make sure that there is a 0 in every row*/
     for (i = 0; i < NBR_TOWNS; i++)
     {
-        double min = -1;
+        double min = INFINITY;
         for (j = 0; j < NBR_TOWNS; j++)
         {
-            if(d[i][j] < min || min == -1)
+            if(d[i][j] < min)
             {
                 if(d[i][j] != -1)
                     min = d[i][j];
@@ -266,16 +266,17 @@ void little_algorithm(double d0[NBR_TOWNS][NBR_TOWNS], int iteration, double eva
             if(d[i][j] != -1)
                 d[i][j] -= min;
         }
-        eval_node_child += min;
+        if(min != INFINITY)
+            eval_node_child += min;
     }
 
     /* Make sure that there is a 0 in every column*/
     for (j = 0; j < NBR_TOWNS; j++)
     {
-        double min = -1;
+        double min = INFINITY;
         for (i = 0; i < NBR_TOWNS; i++)
         {
-            if(d[i][j] < min || min == -1)
+            if(d[i][j] < min)
             {
                 if(d[i][j] != -1)
                     min = d[i][j];
@@ -286,7 +287,8 @@ void little_algorithm(double d0[NBR_TOWNS][NBR_TOWNS], int iteration, double eva
             if(d[i][j] != -1)
                 d[i][j] -= min;
         }
-        eval_node_child += min;
+        if(min != INFINITY)
+            eval_node_child += min;
     }
 
 
@@ -336,6 +338,8 @@ void little_algorithm(double d0[NBR_TOWNS][NBR_TOWNS], int iteration, double eva
         }
     }
 
+    if(izero == -1 || jzero == -1)
+        return;
     starting_town[iteration] = izero;
     ending_town[iteration] = jzero;
 
