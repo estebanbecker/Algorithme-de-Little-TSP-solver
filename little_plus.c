@@ -11,7 +11,7 @@
 #include <string.h>
 #include <time.h>
 
-#define NBR_TOWNS 16
+#define NBR_TOWNS 10
 
 /* Distance matrix */
 double dist[NBR_TOWNS][NBR_TOWNS] ;
@@ -43,14 +43,8 @@ float coord[NBR_TOWNS][2]=
     {25.0,  230.0},
     {525.0, 1000.0},
     {580.0, 1175.0},
-    {650.0, 1130.0},
-    {1605.0, 620.0},
-    {1220.0, 580.0},
-    {1465.0, 200.0},
-    {1530.0,  5.0},
-    {845.0, 680.0},
-    {725.0, 370.0}
-
+    {650.0, 1130.0}
+    
 } ;
 
 
@@ -214,6 +208,40 @@ void build_solution()
 }
 
 /**
+ * Eliminate the possible subtours
+*/
+void subtour_elimination(double d[NBR_TOWNS][NBR_TOWNS], int iteration)
+{
+    for(int i = 0; i <= iteration; i++)
+    {
+        int j = 0;
+        int found = 1;
+        int start = starting_town[i];
+        int end = starting_town[i];
+
+        while(j <= iteration && found)
+        {
+            for (int k = 0; k <= iteration; k++)
+            {
+                found = 0;
+                if(starting_town[k] == end)
+                {
+                    end = ending_town[k];
+                    found = 1;
+                    
+                }
+            }
+            if(found)
+            {
+                d[end][start] = -1;
+            }
+            j++;
+        }
+        
+    }
+}
+
+/**
  *  Little Algorithm
  */
 void little_algorithm(double d0[NBR_TOWNS][NBR_TOWNS], int iteration, double eval_node_parent)
@@ -344,6 +372,9 @@ void little_algorithm(double d0[NBR_TOWNS][NBR_TOWNS], int iteration, double eva
         d2[izero][i] = -1;
         d2[i][jzero] = -1;
     }
+
+    /*Here we can add a function that avoid the creation of a loop*/
+    subtour_elimination(d2, iteration);
 
 
     /* Explore left child node according to given choice */

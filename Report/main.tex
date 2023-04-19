@@ -77,7 +77,7 @@ for (int i=0; i<NBR_TOWNS; i++)
     }
 \end{lstlisting}
 
-Ainsi, à la ligne 7 on calcul la distance entre la ville i et la ville j, et à la ligne 9 on recopie cette distance dans la case correspondante de la matrice symétrique.
+Ainsi, à la ligne 7 on calcule la distance entre la ville i et la ville j, et à la ligne 9 on recopie cette distance dans la case correspondante de la matrice symétrique.
 La ligne 12 permet de mettre une valeur négative dans la diagonale de la matrice, afin de ne pas prendre en compte la distance entre une ville et elle-même.
 
 \subsection{Création fonction build\_nearest\_neighbour}
@@ -394,5 +394,13 @@ Si la matrice est pleine de -1, il faut sortir de la fonction. Ceci est possible
 if(izero == -1 || jzero == -1)
     return;
 \end{lstlisting}
+
+\section{Expérimentation}
+
+On va maintenant tester nos algorithmes sur les données du Berlin 52. Pour cela on va caluler le temps d'exécution de l'algorithme de Little, de Little+ (élimination des sous tour) et de GLPK.
+
+\subsection{Résultats}
+
+
 
 \end{document}
