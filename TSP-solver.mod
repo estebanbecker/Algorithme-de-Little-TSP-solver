@@ -1,39 +1,53 @@
-param N, integer, >= 3;
+param n, integer, >= 3;
 
-set V := 1..N;
-var order{V} >= 0;
+set V := 1..n;
+
+set E := {(i,j) in V cross V};
 
 #coordiante of node
-param x{V};
-param y{V};
+param coord_x{V};
+param coord_y{V};
 
-param distance{i in V, j in V} := if sqrt((x[i]-x[j])^2 + (y[i]-y[j])^2) > 0 then sqrt((x[i]-x[j])^2 + (y[i]-y[j])^2) else 9999999999999;
+param c{(i,j) in E}:= if sqrt((coord_x[i]-coord_x[j])^2 + (coord_y[i]-coord_y[j])^2) > 0 then sqrt((coord_x[i]-coord_x[j])^2 + (coord_y[i]-coord_y[j])^2) else 9999999999999;
+/* distance from node i to node j using euclidian distance*/
 
-var choice{V,V} binary;
+var x{(i,j) in E}, binary;/*choose the path*/
 
-minimize lengh : sum{i in V, j in V} choice[i,j] * distance[i,j];
+minimize total: sum{(i,j) in E} c[i,j] * x[i,j];
 
-s.t. oneout{i in V} : sum{j in V} choice[i,j] = 1;
-s.t. onein{i in V} : sum{j in V} choice[j,i] = 1;
+/*be sure that each node is visited only once*/
 
-#subtour elimination using order
-s.t. subtour{i in V, j in V: i != j and i > 1 and j > 1}: order[i] - order[j] + N * choice[i,j] <= N-1;
+s.t. leave{i in V}: sum{(i,j) in E} x[i,j] = 1;
+
+s.t. enter{j in V}: sum{(i,j) in E} x[i,j] = 1;
+
+
+/*be sure that the tour is a cycle using a countdown*/
+var y{(i,j) in E}, >= 0;
+
+s.t. cap{(i,j) in E}: y[i,j] <= (n-1) * x[i,j];
+
+s.t. node{i in V}: sum{(j,i) in E} y[j,i] + (if i = 1 then n) = sum{(i,j) in E} y[i,j] + 1;
 
 solve;
 
-display lengh;
+printf "Optimal tour has length %f\n",
+   sum{(i,j) in E} c[i,j] * x[i,j];
+printf("From node   To node   Distance\n");
+printf{(i,j) in E: x[i,j]} "      %3d       %3d   %8g\n",
+   i, j, c[i,j];
 
 data;
 
-param N := 52;
+param n := 26;
 
-param x :=
+param coord_x :=
     1 565
     2 25
     3 345
     4 945
     5 845
-    6 880 
+    6 880
     7 25
     8 525
     9 580
@@ -54,35 +68,9 @@ param x :=
     24 835
     25 975
     26 1215
-    27 1320
-    28 1250
-    29 660
-    30 410
-    31 420
-    32 575
-    33 1150
-    34 700
-    35 685
-    36 685
-    37 770
-    38 795
-    39 720
-    40 760
-    41 475
-    42 95
-    43 875
-    44 700
-    45 555
-    46 830
-    47 1170
-    48 830
-    49 605
-    50 595
-    51 1340
-    52 1740
     ;
 
-param y :=
+param coord_y :=
     1 575
     2 185
     3 750
@@ -109,30 +97,4 @@ param y :=
     24 625
     25 580
     26 245
-    27 315
-    28 400
-    29 180
-    30 250
-    31 555
-    32 665
-    33 1160
-    34 580
-    35 595
-    36 610
-    37 610
-    38 645
-    39 635
-    40 650
-    41 960
-    42 500
-    43 920
-    44 500
-    45 815
-    46 485
-    47 65
-    48 610
-    49 625
-    50 360
-    51 725
-    52 245
     ;

@@ -407,20 +407,20 @@ On va maintenant tester nos algorithmes sur les données du Berlin 52. Pour cela
     \hline
         \textbf{Nb Villes} & \textbf{Little} & \textbf{Little+} & \textbf{GLPK} \\ \hline
         \textbf{6} & 0,000776 & 0,008 & 0 \\ \hline
-        \textbf{11} & 2,875 & 0,026 & 0 \\ \hline
-        \textbf{16} & >600 & 25,184 & 0,1 \\ \hline
-        \textbf{21} & >600 & 315,251 & 0,2 \\ \hline
-        \textbf{26} & >600 & >600 & 0,3 \\ \hline
-        \textbf{31} & >600 & >600 & 0,9 \\ \hline
-        \textbf{36} & >600 & >600 & 51 \\ \hline
-        \textbf{41} & >600 & >600 & 9,5 \\ \hline
-        \textbf{46} & >600 & >600 & 50,6 \\ \hline
+        \textbf{11} & 2,875 & 0,026 & 0,1 \\ \hline
+        \textbf{16} & >600 & 25,184 & 1,6 \\ \hline
+        \textbf{21} & >600 & 315,251 & 27,9 \\ \hline
+        \textbf{26} & >600 & >600 & >600 \\ \hline
+        \textbf{31} & >600 & >600 & >600 \\ \hline
+        \textbf{36} & >600 & >600 & >600 \\ \hline
+        \textbf{41} & >600 & >600 & >600 \\ \hline
+        \textbf{46} & >600 & >600 & >600 \\ \hline
         \textbf{52} & >600 & >600 & >600 \\ \hline
     \end{tabular}
 \end{table}
 
 On peut voir dans le tableau ci-dessus que l'algorithme de Little bien plus lent que Little+ (élimination des sous tour). Cela est dû au fait que l'algorithme de Little+ élimine les sous tours, ce qui permet d'éviter des itérations inutiles.
 Cependant, le problème étant un problème combinatoire, on se rend compte que malgré l'efficacité de l'algorithme de Little+ la durée de résonnement augmente de manière exponentielle.
-De plus on peut voir que GLPK est beaucoup plus rapide que les deux autres algorithmes. Cependant, passé un certain nombre de villes, GLPK ne donnait plus les résultats parfaitement. Cela est dû au fait que GLPK est un algorithme de programmation linéaire, il est donc plus adapté à des problèmes de ce type.
+De plus on peut voir que GLPK est plus rapide que les deux autres algorithmes. J'en suis personnellement surpris, car GLPK est un solveur linéaire, alors que les deux autres algorithmes sont des algorithmes pensés spécifiquement pour résoudre ce problème.
 
 \end{document}
